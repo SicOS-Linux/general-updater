@@ -30,7 +30,6 @@ function show_header {
     echo -e "Hello, User! Welcome to the update utility."
     echo -e "This script will update your .deb packages, Flatpaks, and Snaps (if installed)."
     echo -e "The program will automatically close when all updates are completed."
-    echo -e "\nPlease enter your password to begin."
     echo -e "${WHITE_ON_PURPLE}===============================================${NC}"
 }
 

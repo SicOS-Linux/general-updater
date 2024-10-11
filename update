@@ -1,0 +1,80 @@
+#!/bin/bash
+# -*- ENCODING: UTF-8 -*-
+
+# Script information
+SCRIPT_NAME="GENERAL UPDATER"
+AUTHOR="Klee"
+LICENSE_URL="http://www.opensource.org/licenses/mit-license.php"
+
+# Function to display the header
+function show_header {
+    clear
+    echo -e "\e[01;37;45m========== $SCRIPT_NAME ==========\e[0m"
+    echo -e "Author: $AUTHOR"
+    echo -e "License: $LICENSE_URL"
+    echo -e "\e[37;45m===============================================\e[0m"
+    echo -e "Hello User, welcome to the update utility."
+    echo -e "This script will update your .deb packages, Flatpaks, and Snaps (if installed)."
+    echo -e "The program will automatically close when all updates are completed."
+    echo -e "\nPlease enter your password to begin."
+    echo -e "\e[37;45m===============================================\e[0m"
+}
+
+# Function to update .deb packages
+function update_deb {
+    echo -e "\e[01;32mStarting .deb packages update...\e[0m"
+    sudo apt update && sudo apt full-upgrade -y
+    if [ $? -eq 0 ]; then
+        echo -e "\e[01;32m.deb packages updated successfully!\e[0m"
+    else
+        echo -e "\e[01;31mFailed to update .deb packages.\e[0m"
+    fi
+}
+
+# Function to update Flatpaks
+function update_flatpak {
+    echo -e "\e[01;32mStarting Flatpak update...\e[0m"
+    flatpak update -y
+    if [ $? -eq 0 ]; then
+        echo -e "\e[01;32mFlatpaks updated successfully!\e[0m"
+    else
+        echo -e "\e[01;31mFailed to update Flatpaks.\e[0m"
+    fi
+}
+
+# Function to check if Snap is installed and update it
+function update_snap {
+    if command -v snap &> /dev/null; then
+        echo -e "\e[01;32mSnap detected. Starting Snap update...\e[0m"
+        sudo snap refresh
+        if [ $? -eq 0 ]; then
+            echo -e "\e[01;32mSnap packages updated successfully!\e[0m"
+        else
+            echo -e "\e[01;31mFailed to update Snap packages.\e[0m"
+        fi
+    else
+        echo -e "\e[01;33mSnap is not installed. Skipping Snap update.\e[0m"
+    fi
+}
+
+# Main function
+function main {
+    show_header
+
+    # Update .deb packages
+    update_deb
+
+    # Update Flatpaks
+    update_flatpak
+
+    # Check for Snap and update if installed
+    update_snap
+
+    # Final message
+    echo -e "\e[01;37;45m========== UPDATE COMPLETED ==========\e[0m"
+    echo -e "Thank you for using $SCRIPT_NAME. See you next time!"
+    exit 0  # This ensures the script exits automatically
+}
+
+# Run the main script
+main
